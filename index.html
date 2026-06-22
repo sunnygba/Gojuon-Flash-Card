@@ -42,17 +42,20 @@
   .progress-container { width: 100%; background: #eee; border-radius: 4px; height: 10px; overflow: hidden;}
   #time-bar { height: 100%; background: var(--success); width: 100%; transition: width 0.1s linear, background-color 0.3s; }
   
+  /* --- 排版修正：響應式卡片樣式 --- */
   .flashcard { 
     background: #fff; border: 2px solid var(--primary); border-radius: 16px; 
-    height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    cursor: pointer; margin-bottom: 20px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    user-select: none; position: relative;
+    min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    cursor: pointer; margin-bottom: 10px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    user-select: none; padding: 20px; text-align: center; position: relative;
   }
-  .flashcard-main { font-size: 80px; }
-  .flashcard-romaji { font-size: 24px; color: #888; margin-top: 10px; display: none; }
+  .flashcard-main { font-size: clamp(40px, 12vw, 70px); line-height: 1.1; word-break: break-all; }
+  .flashcard-romaji { font-size: clamp(20px, 6vw, 30px); color: #888; margin-top: 10px; display: none; }
+  
+  .audio-hint { text-align: center; color: #999; font-size: 13px; margin-bottom: 20px; }
   
   .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .option-btn { background: #f0f4f8; color: var(--text); border: 2px solid #dcdcdc; font-size: 22px; padding: 15px; }
+  .option-btn { background: #f0f4f8; color: var(--text); border: 2px solid #dcdcdc; font-size: 22px; padding: 15px; border-radius: 8px;}
   .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
   .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
   
@@ -61,8 +64,8 @@
   .btn-knew { background-color: var(--success); }
   .btn-forgot { background-color: var(--danger); }
 
-  /* 免責聲明 */
-  .disclaimer {
+  /* 免責聲明與贊助區塊 */
+  .footer-section {
     margin-top: 25px;
     padding-top: 15px;
     border-top: 1px solid #eee;
@@ -70,6 +73,14 @@
     color: #999;
     text-align: center;
     line-height: 1.6;
+  }
+  .bmc-btn {
+    display: inline-block;
+    margin-top: 15px;
+    transition: transform 0.2s;
+  }
+  .bmc-btn:hover {
+    transform: scale(1.05);
   }
 </style>
 </head>
@@ -135,7 +146,8 @@
       <div class="flashcard-main" id="card-display">あ</div>
       <div class="flashcard-romaji" id="card-romaji">a</div>
     </div>
-    <div style="text-align:center; color:#666; font-size:12px; margin-bottom:10px;">點擊卡片可發音</div>
+    
+    <div class="audio-hint" id="audio-hint">點擊卡片可發音</div>
 
     <div class="options-grid" id="options-container"></div>
 
@@ -154,11 +166,12 @@
     <button onclick="app.quit()" style="margin-top: 20px;">回到設定頁</button>
   </div>
 
-  <div class="disclaimer">
+  <div class="footer-section">
     只供學習之用<br>
     Web Speech API讀法只供參考<br>
     Developed by YS WONG<br>
     (Version 1.2.26.06.22)<br>
+    
     <a class="bmc-btn" href="https://buymeacoffee.com/sunnygor" target="_blank">
       <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 145px !important;" >
     </a>
